@@ -1,6 +1,8 @@
 package io.stevengoh.portfolio.school_management_app.common.specifications;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.stevengoh.portfolio.school_management_app.common.annotations.FilterField;
+import jakarta.persistence.criteria.From;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -60,12 +62,20 @@ public class SpecificationBuilder<T, F> {
                 if (value == null) continue;
 
                 FilterField annotation = field.getAnnotation(FilterField.class);
-                String entityField = (annotation != null && !annotation.path().isEmpty())
+                String rawPath = (annotation != null && !annotation.path().isEmpty())
                         ? annotation.path()
-                        : field.getName();
+                        : resolvePathFromFieldName(field.getName());
 
                 FilterField.Match match = (annotation != null) ? annotation.match() : FilterField.Match.AUTO;
-                Path<?> path = root.get(entityField);
+
+                Path<?> path;
+                try {
+                    path = getPath(root, rawPath);
+                    System.out.println(path);
+                } catch (IllegalArgumentException ex) {
+                    System.out.println(ex.getMessage());
+                    continue; // ignore invalid paths
+                }
 
                 // Auto match type
                 if (match == FilterField.Match.AUTO) {
@@ -84,5 +94,23 @@ public class SpecificationBuilder<T, F> {
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
+    }
+
+    private String resolvePathFromFieldName(String fieldName) {
+        // Example: "roleUuid" → "role.uuid"
+        if (fieldName.endsWith("Uuid") && fieldName.length() > 4) {
+            String entity = fieldName.substring(0, fieldName.length() - 4);
+            return entity + ".uuid";
+        }
+        return fieldName;
+    }
+
+    private Path<?> getPath(From<?, ?> root, String path) {
+        String[] parts = path.split("\\.");
+        Path<?> current = root;
+        for (String part : parts) {
+            current = current.get(part);
+        }
+        return current;
     }
 }
