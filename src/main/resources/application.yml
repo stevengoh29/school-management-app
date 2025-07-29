@@ -1,0 +1,28 @@
+# --------------------------------------------
+# SPRING
+# --------------------------------------------
+spring:
+  application:
+    name: school-management-app
+  datasource:
+    url: jdbc:postgresql://localhost:5432/school-management-app
+    username: postgres
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+# --------------------------------------------
+# SERVER
+# --------------------------------------------
+server:
+  port: 8080
+
+# --------------------------------------------
+# JWT
+# --------------------------------------------
+jwt:
+  secret: my-very-secret-jwt-key-that-is-at-least-32-bytes-long
+  expiration-ms: 86400000 # 1 day
