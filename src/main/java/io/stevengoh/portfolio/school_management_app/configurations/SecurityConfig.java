@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         // Allow unauthenticated access to login, register, etc.
-                        .requestMatchers("/auth/**", "/public/**").permitAll()
+                        .requestMatchers("/auth/**", "/public/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         // Require auth for all other endpoints
                         .anyRequest().authenticated()
                 )

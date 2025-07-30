@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class AutoAssignInstitutionAspect {
     @Before("@annotation(io.stevengoh.portfolio.school_management_app.common.annotations.AutoAssignInstitution)")
     public void assignInstitutionToEntities(JoinPoint joinPoint) {
-        System.out.println("halo bro");
         for (Object arg : joinPoint.getArgs()) {
             if (arg instanceof InstitutionAware entity) {
                 Institution institution = AuthUtils.getUserInstitution();

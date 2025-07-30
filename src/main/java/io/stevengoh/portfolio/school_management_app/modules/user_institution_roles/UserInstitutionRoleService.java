@@ -23,9 +23,9 @@ public interface UserInstitutionRoleService {
 
     DetailedResUserInstitutionRoleDto getUserInstitutionRoleByUuidOrThrow(UUID uuid);
 
-    DetailedResUserInstitutionRoleDto createUserInstitutionRole(CreateUserInstitutionRoleDto createUserInstitutionRoleDto);
+    DetailedResUserInstitutionRoleDto createUserInstitutionRole(UUID uuid, CreateUserInstitutionRoleDto createUserInstitutionRoleDto);
 
-    List<DetailedResUserInstitutionRoleDto> createBulkUserInstitutionRole(List<CreateUserInstitutionRoleDto> createUserInstitutionRoleDtos);
+    List<DetailedResUserInstitutionRoleDto> createBulkUserInstitutionRole(UUID uuid, List<CreateUserInstitutionRoleDto> createUserInstitutionRoleDtos);
 
     void deleteUserInstitutionRole(UUID uuid);
 

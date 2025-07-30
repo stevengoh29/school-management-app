@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("institutions/:uuid/user-roles")
+@RequestMapping("institutions/{institutionUuid}/user-roles")
 @RequiredArgsConstructor
 public class UserInstitutionRoleController {
     private final UserInstitutionRoleService userRoleService;
@@ -42,17 +42,19 @@ public class UserInstitutionRoleController {
 
     @PostMapping
     public ResponseEntity<BaseResponse<DetailedResUserInstitutionRoleDto>> createUserInstitutionRole(
+            @PathVariable("institutionUuid") UUID uuid,
             @RequestBody CreateUserInstitutionRoleDto createUserInstitutionRoleDto
     ) {
-        DetailedResUserInstitutionRoleDto response = userRoleService.createUserInstitutionRole(createUserInstitutionRoleDto);
+        DetailedResUserInstitutionRoleDto response = userRoleService.createUserInstitutionRole(uuid, createUserInstitutionRoleDto);
         return ResponseEntity.ok(new BaseResponse<>(response));
     }
 
     @PostMapping("bulk-insert")
     public ResponseEntity<BaseResponse<List<DetailedResUserInstitutionRoleDto>>> bulkInsertUserInstitutionRoles(
+            @PathVariable("institutionUuid") UUID uuid,
             @RequestBody List<CreateUserInstitutionRoleDto> createUserInstitutionRoleDtos
     ) {
-        List<DetailedResUserInstitutionRoleDto> response = userRoleService.createBulkUserInstitutionRole(createUserInstitutionRoleDtos);
+        List<DetailedResUserInstitutionRoleDto> response = userRoleService.createBulkUserInstitutionRole(uuid, createUserInstitutionRoleDtos);
         return ResponseEntity.ok(new BaseResponse<>(response));
     }
 

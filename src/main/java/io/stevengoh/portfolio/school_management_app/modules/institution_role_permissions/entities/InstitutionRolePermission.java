@@ -1,39 +1,32 @@
-package io.stevengoh.portfolio.school_management_app.modules.user_institution_roles.entities;
+package io.stevengoh.portfolio.school_management_app.modules.institution_role_permissions.entities;
 
 import io.stevengoh.portfolio.school_management_app.common.entities.BaseEntity;
 import io.stevengoh.portfolio.school_management_app.modules.institution_roles.entities.InstitutionRole;
 import io.stevengoh.portfolio.school_management_app.modules.institutions.entities.Institution;
-import io.stevengoh.portfolio.school_management_app.modules.roles.entities.Role;
-import io.stevengoh.portfolio.school_management_app.modules.users.entities.User;
+import io.stevengoh.portfolio.school_management_app.modules.permissions.entities.Permission;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "user_institution_roles")
+@Entity(name = "institution_role_permissions")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserInstitutionRole extends BaseEntity {
+public class InstitutionRolePermission extends BaseEntity {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "institution_role_id")
     private InstitutionRole institutionRole;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "institution_id")
+    private Permission permission;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Institution institution;
 
-    public UserInstitutionRole(User user, InstitutionRole institutionRole) {
-        this.user = user;
+    public InstitutionRolePermission(InstitutionRole institutionRole, Permission permission) {
         this.institutionRole = institutionRole;
+        this.permission = permission;
     }
 }

@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -77,27 +78,28 @@ public class UserInstitutionRoleServiceImpl implements UserInstitutionRoleServic
 
     @Override
     @AutoAssignInstitution
-    public DetailedResUserInstitutionRoleDto createUserInstitutionRole(CreateUserInstitutionRoleDto createUserInstitutionRoleDto) {
+    public DetailedResUserInstitutionRoleDto createUserInstitutionRole(UUID uuid, CreateUserInstitutionRoleDto createUserInstitutionRoleDto) {
         User user = userService.findByUuidOrThrow(createUserInstitutionRoleDto.getUserUuid());
         InstitutionRole role = roleService.findByUuidOrThrow(createUserInstitutionRoleDto.getInstitutionRoleUuid());
 
         UserInstitutionRole userRole = new UserInstitutionRole(user, role);
 
-        if (createUserInstitutionRoleDto.getInstitutionUuid() != null) {
-            Institution institution = institutionService.findByUuidOrThrow(createUserInstitutionRoleDto.getInstitutionUuid());
+        if (createUserInstitutionRoleDto.getInstitution() != null) {
+            userRole.setInstitution(createUserInstitutionRoleDto.getInstitution());
+        } else {
+            Institution institution = institutionService.findByUuidOrThrow(uuid);
             userRole.setInstitution(institution);
         }
-
         UserInstitutionRole createdUserInstitutionRole = userRoleRepository.save(userRole);
         return responseMapper.toDetailedDto(createdUserInstitutionRole);
     }
 
     @Override
-    public List<DetailedResUserInstitutionRoleDto> createBulkUserInstitutionRole(List<CreateUserInstitutionRoleDto> createUserInstitutionRoleDtos) {
+    public List<DetailedResUserInstitutionRoleDto> createBulkUserInstitutionRole(UUID uuid, List<CreateUserInstitutionRoleDto> createUserInstitutionRoleDtos) {
         List<DetailedResUserInstitutionRoleDto> createdUsers = new ArrayList<>();
 
         for (CreateUserInstitutionRoleDto createUserInstitutionRoleDto : createUserInstitutionRoleDtos) {
-            DetailedResUserInstitutionRoleDto createdUser = this.createUserInstitutionRole(createUserInstitutionRoleDto);
+            DetailedResUserInstitutionRoleDto createdUser = this.createUserInstitutionRole(uuid, createUserInstitutionRoleDto);
             createdUsers.add(createdUser);
         }
 
