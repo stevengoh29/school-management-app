@@ -3,9 +3,6 @@ package io.stevengoh.portfolio.school_management_app.modules.roles;
 import io.stevengoh.portfolio.school_management_app.common.dtos.PaginatedResult;
 import io.stevengoh.portfolio.school_management_app.common.specifications.SpecificationBuilder;
 import io.stevengoh.portfolio.school_management_app.core.auth.entities.CustomUserDetails;
-import io.stevengoh.portfolio.school_management_app.modules.institutions.dtos.request.SearchInstitutionDto;
-import io.stevengoh.portfolio.school_management_app.modules.institutions.dtos.response.SimpleResInstitutionDto;
-import io.stevengoh.portfolio.school_management_app.modules.institutions.entities.Institution;
 import io.stevengoh.portfolio.school_management_app.modules.roles.dtos.request.CreateRoleDto;
 import io.stevengoh.portfolio.school_management_app.modules.roles.dtos.request.SearchRoleDto;
 import io.stevengoh.portfolio.school_management_app.modules.roles.dtos.request.UpdateRoleDto;
@@ -22,11 +19,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -98,7 +94,7 @@ public class RoleServiceImpl implements RoleService {
 
         Role role = findByUuidOrThrow(uuid);
         role.setStatus(RoleStatus.INACTIVE);
-        role.setDeletedAt(LocalDateTime.now());
+        role.setDeletedAt(Instant.now());
         role.setDeletedBy(customUserDetails.getUsername());
 
         roleRepository.save(role);

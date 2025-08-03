@@ -1,5 +1,6 @@
 package io.stevengoh.portfolio.school_management_app.modules.users.dtos.response;
 
+import io.stevengoh.portfolio.school_management_app.common.dtos.WithAuditingBaseResponseMapperDto;
 import io.stevengoh.portfolio.school_management_app.modules.institutions.dtos.response.SimpleResInstitutionDto;
 import io.stevengoh.portfolio.school_management_app.modules.user_roles.dtos.response.SimpleResUserRoleDto;
 import io.stevengoh.portfolio.school_management_app.modules.users.enums.UserStatus;
@@ -12,8 +13,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class DetailedResUserDto {
-    private UUID uuid;
+public class DetailedResUserDto extends WithAuditingBaseResponseMapperDto {
     private String username;
     private String email;
     private UserStatus status;

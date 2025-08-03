@@ -4,7 +4,6 @@ import io.stevengoh.portfolio.school_management_app.common.annotations.AutoAssig
 import io.stevengoh.portfolio.school_management_app.common.dtos.PaginatedResult;
 import io.stevengoh.portfolio.school_management_app.common.specifications.SpecificationBuilder;
 import io.stevengoh.portfolio.school_management_app.common.utils.AuthUtils;
-import io.stevengoh.portfolio.school_management_app.core.auth.entities.CustomUserDetails;
 import io.stevengoh.portfolio.school_management_app.modules.institution_roles.dtos.request.CreateInstitutionRoleDto;
 import io.stevengoh.portfolio.school_management_app.modules.institution_roles.dtos.request.SearchInstitutionRoleDto;
 import io.stevengoh.portfolio.school_management_app.modules.institution_roles.dtos.request.UpdateInstitutionRoleDto;
@@ -24,11 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,7 +82,7 @@ public class InstitutionRoleServiceImpl implements InstitutionRoleService {
         System.out.println(createInstitutionRoleDto.getInstitution().getName());
         InstitutionRole institutionRole = requestMapper.createEntityToDto(createInstitutionRoleDto);
 
-        if(createInstitutionRoleDto.getRoleUuid() != null) {
+        if (createInstitutionRoleDto.getRoleUuid() != null) {
             Role role = roleService.findByUuidOrThrow(createInstitutionRoleDto.getRoleUuid());
             institutionRole.setBaseRole(role);
         }
@@ -116,7 +113,7 @@ public class InstitutionRoleServiceImpl implements InstitutionRoleService {
 
         InstitutionRole role = findByUuidOrThrow(uuid);
         role.setStatus(RoleStatus.INACTIVE);
-        role.setDeletedAt(LocalDateTime.now());
+        role.setDeletedAt(Instant.now());
         role.setDeletedBy(username);
 
         institutionRoleRepository.save(role);

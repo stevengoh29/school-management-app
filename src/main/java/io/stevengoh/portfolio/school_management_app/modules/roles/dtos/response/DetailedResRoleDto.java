@@ -1,5 +1,6 @@
 package io.stevengoh.portfolio.school_management_app.modules.roles.dtos.response;
 
+import io.stevengoh.portfolio.school_management_app.common.dtos.WithAuditingBaseResponseMapperDto;
 import io.stevengoh.portfolio.school_management_app.common.enums.ActorType;
 import io.stevengoh.portfolio.school_management_app.modules.roles.enums.RoleStatus;
 import lombok.Getter;
@@ -9,8 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class DetailedResRoleDto {
-    private UUID uuid;
+public class DetailedResRoleDto extends WithAuditingBaseResponseMapperDto {
     private String name;
     private String description;
     private ActorType actorType;

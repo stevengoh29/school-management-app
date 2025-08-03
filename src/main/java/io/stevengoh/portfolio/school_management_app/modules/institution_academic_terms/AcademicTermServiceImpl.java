@@ -22,7 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -117,7 +117,7 @@ public class AcademicTermServiceImpl implements AcademicTermService {
         String username = AuthUtils.getUsername();
 
         academicTerm.setIsCurrent(false);
-        academicTerm.setDeletedAt(LocalDateTime.now());
+        academicTerm.setDeletedAt(Instant.now());
         academicTerm.setDeletedBy(username);
 
         academicTermRepository.save(academicTerm);

@@ -21,7 +21,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
         User user = this.findByUuidOrThrow(uuid);
 
         user.setStatus(UserStatus.INACTIVE);
-        user.setDeletedAt(LocalDateTime.now());
+        user.setDeletedAt(Instant.now());
         user.setDeletedBy("UNKNOWN");
 
         userRepository.save(user);

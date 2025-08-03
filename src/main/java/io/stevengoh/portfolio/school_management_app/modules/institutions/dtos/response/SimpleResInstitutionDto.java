@@ -1,17 +1,14 @@
 package io.stevengoh.portfolio.school_management_app.modules.institutions.dtos.response;
 
+import io.stevengoh.portfolio.school_management_app.common.dtos.WithAuditingBaseResponseMapperDto;
 import io.stevengoh.portfolio.school_management_app.modules.institutions.enums.InstitutionStatus;
 import io.stevengoh.portfolio.school_management_app.modules.institutions.enums.InstitutionType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 @Getter
 @Setter
-public class SimpleResInstitutionDto {
-    private UUID uuid;
+public class SimpleResInstitutionDto extends WithAuditingBaseResponseMapperDto {
     private String name;
     private String code;
     private InstitutionType type;
@@ -19,8 +16,4 @@ public class SimpleResInstitutionDto {
     private String phoneNumber;
     private String address;
     private InstitutionStatus status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private String createdBy;
-    private String updatedBy;
 }

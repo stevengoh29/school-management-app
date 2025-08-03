@@ -4,8 +4,8 @@ CREATE TABLE permissions
     uuid        UUID DEFAULT gen_random_uuid()          NOT NULL,
     created_by  VARCHAR(255),
     updated_by  VARCHAR(255),
-    created_at  TIMESTAMP WITHOUT TIME ZONE,
-    updated_at  TIMESTAMP WITHOUT TIME ZONE,
+    created_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMPTZ,
     name        VARCHAR(255)                            NOT NULL,
     description VARCHAR(255),
     CONSTRAINT pk_permissions PRIMARY KEY (id)

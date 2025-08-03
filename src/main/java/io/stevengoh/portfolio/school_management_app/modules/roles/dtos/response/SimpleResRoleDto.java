@@ -1,5 +1,6 @@
 package io.stevengoh.portfolio.school_management_app.modules.roles.dtos.response;
 
+import io.stevengoh.portfolio.school_management_app.common.dtos.BaseResponseMapperDto;
 import io.stevengoh.portfolio.school_management_app.common.enums.ActorType;
 import io.stevengoh.portfolio.school_management_app.modules.roles.enums.RoleStatus;
 import jakarta.persistence.Column;
@@ -12,8 +13,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class SimpleResRoleDto {
-    private UUID uuid;
+public class SimpleResRoleDto extends BaseResponseMapperDto {
     private String name;
     private String description;
     private ActorType actorType;
