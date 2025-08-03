@@ -14,6 +14,6 @@ public class SimpleResAcademicTermDto {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
-    private TermStatus termStatus;
+    private TermStatus status;
     private Boolean isCurrent;
 }
