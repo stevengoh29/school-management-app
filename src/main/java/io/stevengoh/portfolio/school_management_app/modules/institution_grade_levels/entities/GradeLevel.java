@@ -20,7 +20,7 @@ public class GradeLevel extends WithSoftDeleteBaseEntity {
     private Integer orderIndex;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "class_level_id")
+    @JoinColumn(name = "academic_level_id")
     private AcademicLevel academicLevel;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

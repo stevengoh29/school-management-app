@@ -11,7 +11,10 @@ import io.stevengoh.portfolio.school_management_app.modules.institution_academic
 import io.stevengoh.portfolio.school_management_app.modules.institution_academic_classes.entities.AcademicClass;
 import io.stevengoh.portfolio.school_management_app.modules.institution_academic_classes.mappers.AcademicClassRequestMapper;
 import io.stevengoh.portfolio.school_management_app.modules.institution_academic_classes.mappers.AcademicClassResponseMapper;
+import io.stevengoh.portfolio.school_management_app.modules.institution_academic_terms.AcademicTermService;
 import io.stevengoh.portfolio.school_management_app.modules.institution_academic_terms.entities.AcademicTerm;
+import io.stevengoh.portfolio.school_management_app.modules.institution_grade_levels.GradeLevelService;
+import io.stevengoh.portfolio.school_management_app.modules.institution_grade_levels.entities.GradeLevel;
 import io.stevengoh.portfolio.school_management_app.modules.institutions.InstitutionService;
 import io.stevengoh.portfolio.school_management_app.modules.institutions.entities.Institution;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,6 +31,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AcademicClassServiceImpl implements AcademicClassService {
     private final InstitutionService institutionService;
+    private final AcademicTermService academicTermService;
+    private final GradeLevelService gradeLevelService;
 
     private final AcademicClassRepository academicClassRepository;
     private final AcademicClassRequestMapper requestMapper;
@@ -58,20 +63,22 @@ public class AcademicClassServiceImpl implements AcademicClassService {
 
     @Override
     public DetailedResAcademicClassDto getAcademicClassByUuidOrNull(UUID uuid) {
-        AcademicClass academicLevel = findByUuidOrNull(uuid);
-        return responseMapper.toDetailedResDto(academicLevel);
+        AcademicClass academicClass = findByUuidOrNull(uuid);
+        return responseMapper.toDetailedResDto(academicClass);
     }
 
     @Override
     public DetailedResAcademicClassDto getAcademicClassByUuidOrThrow(UUID uuid) {
-        AcademicClass academicLevel = findByUuidOrThrow(uuid);
-        return responseMapper.toDetailedResDto(academicLevel);
+        AcademicClass academicClass = findByUuidOrThrow(uuid);
+        return responseMapper.toDetailedResDto(academicClass);
     }
 
     @Override
     @AutoAssignInstitution
-    public DetailedResAcademicClassDto createAcademicClass(UUID institutionUuid, UUID termUuid, CreateAcademicClassDto request) {
+    public DetailedResAcademicClassDto createAcademicClass(UUID institutionUuid, CreateAcademicClassDto request) {
         AcademicClass entity = requestMapper.createDtoToEntity(request);
+        AcademicTerm academicTerm = academicTermService.findByUuidOrThrow(request.getAcademicTermUuid());
+        GradeLevel gradeLevel = gradeLevelService.findByUuidOrThrow(request.getGradeLevelUuid());
 
         if (request.getInstitution() != null) {
             entity.setInstitution(request.getInstitution());
@@ -80,24 +87,25 @@ public class AcademicClassServiceImpl implements AcademicClassService {
             entity.setInstitution(institution);
         }
 
-        entity.setAcademicTerm();
+        entity.setAcademicTerm(academicTerm);
+        entity.setGradeLevel(gradeLevel);
 
         AcademicClass saved = academicClassRepository.save(entity);
         return responseMapper.toDetailedResDto(saved);
     }
 
     @Override
-    public DetailedResAcademicClassDto updateAcademicClass(UUID academicLevelUuid, UpdateAcademicClassDto request) {
-        AcademicClass academicLevel = findByUuidOrThrow(academicLevelUuid);
-        requestMapper.updateDtoToEntity(request, academicLevel);
+    public DetailedResAcademicClassDto updateAcademicClass(UUID academicClassUuid, UpdateAcademicClassDto request) {
+        AcademicClass academicClass = findByUuidOrThrow(academicClassUuid);
+        requestMapper.updateDtoToEntity(request, academicClass);
 
-        AcademicClass saved = academicClassRepository.save(academicLevel);
+        AcademicClass saved = academicClassRepository.save(academicClass);
         return responseMapper.toDetailedResDto(saved);
     }
 
     @Override
-    public void deleteAcademicClass(UUID academicLevelUuid) {
-        AcademicClass academicLevel = findByUuidOrThrow(academicLevelUuid);
-        academicClassRepository.delete(academicLevel);
+    public void deleteAcademicClass(UUID academicClassUuid) {
+        AcademicClass academicClass = findByUuidOrThrow(academicClassUuid);
+        academicClassRepository.delete(academicClass);
     }
 }

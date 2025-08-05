@@ -17,17 +17,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("institutions/{institutionUuid}/academic-terms/{termUuid}/classes")
+@RequestMapping("institutions/{institutionUuid}/academic-classes")
 @RequiredArgsConstructor
 public class AcademicClassController {
     private final AcademicClassService masterAcademicClassService;
 
     @GetMapping
     public ResponseEntity<BaseResponse<PaginatedResult<SimpleResAcademicClassDto>>> getAcademicClasses(
-            @PathVariable String institutionUuid,
+            @PathVariable("institutionUuid") UUID institutionUuid,
             @ModelAttribute SearchAcademicClassDto searchAcademicClassDto,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
+        searchAcademicClassDto.setInstitutionUuid(institutionUuid);
+
         PaginatedResult<SimpleResAcademicClassDto> response = masterAcademicClassService.getAcademicClasses(searchAcademicClassDto, pageable);
         return ResponseEntity.ok(new BaseResponse<>(response));
     }

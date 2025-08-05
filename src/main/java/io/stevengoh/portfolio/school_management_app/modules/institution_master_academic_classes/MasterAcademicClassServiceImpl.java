@@ -4,6 +4,8 @@ import io.stevengoh.portfolio.school_management_app.common.annotations.AutoAssig
 import io.stevengoh.portfolio.school_management_app.common.dtos.PaginatedResult;
 import io.stevengoh.portfolio.school_management_app.common.specifications.SpecificationBuilder;
 import io.stevengoh.portfolio.school_management_app.common.utils.AuthUtils;
+import io.stevengoh.portfolio.school_management_app.modules.institution_grade_levels.GradeLevelService;
+import io.stevengoh.portfolio.school_management_app.modules.institution_grade_levels.entities.GradeLevel;
 import io.stevengoh.portfolio.school_management_app.modules.institution_master_academic_classes.MasterAcademicClassRepository;
 import io.stevengoh.portfolio.school_management_app.modules.institution_master_academic_classes.dtos.request.CreateMasterAcademicClassDto;
 import io.stevengoh.portfolio.school_management_app.modules.institution_master_academic_classes.dtos.request.SearchMasterAcademicClassDto;
@@ -30,6 +32,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MasterAcademicClassServiceImpl implements MasterAcademicClassService {
     private final InstitutionService institutionService;
+    private final GradeLevelService gradeLevelService;
 
     private final MasterAcademicClassRepository masterAcademicClassRepository;
     private final MasterAcademicClassRequestMapper requestMapper;
@@ -81,6 +84,9 @@ public class MasterAcademicClassServiceImpl implements MasterAcademicClassServic
             Institution institution = institutionService.findByUuidOrThrow(institutionUuid);
             entity.setInstitution(institution);
         }
+
+        GradeLevel gradeLevel = gradeLevelService.findByUuidOrThrow(request.getGradeLevelUuid());
+        entity.setGradeLevel(gradeLevel);
 
         MasterAcademicClass saved = masterAcademicClassRepository.save(entity);
         return responseMapper.toDetailedResDto(saved);

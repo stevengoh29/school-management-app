@@ -15,4 +15,5 @@ public class CreateAcademicClassDto implements InstitutionAware {
     private String code;
     private Integer orderIndex;
     private UUID gradeLevelUuid;
+    private UUID academicTermUuid;
 }

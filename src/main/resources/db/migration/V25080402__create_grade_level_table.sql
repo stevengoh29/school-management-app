@@ -24,4 +24,4 @@ ALTER TABLE grade_levels
     ADD CONSTRAINT FK_ACADEMIC_TERMS_ON_INSTITUTION FOREIGN KEY (institution_id) REFERENCES institutions (id);
 
 ALTER TABLE grade_levels
-    ADD CONSTRAINT FK_ACADEMIC_TERMS_ON_CLASS_LEVEL FOREIGN KEY (academic_level_id) REFERENCES class_levels (id);
+    ADD CONSTRAINT FK_ACADEMIC_TERMS_ON_CLASS_LEVEL FOREIGN KEY (academic_level_id) REFERENCES academic_levels (id);

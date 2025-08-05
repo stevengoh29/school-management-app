@@ -17,7 +17,7 @@ public interface AcademicClassService {
     PaginatedResult<SimpleResAcademicClassDto> getAcademicClasses(SearchAcademicClassDto searchAcademicClassDto, Pageable pageable);
     DetailedResAcademicClassDto getAcademicClassByUuidOrNull(UUID uuid);
     DetailedResAcademicClassDto getAcademicClassByUuidOrThrow(UUID uuid);
-    DetailedResAcademicClassDto createAcademicClass(UUID institutionUuid, UUID termUuid, CreateAcademicClassDto request);
+    DetailedResAcademicClassDto createAcademicClass(UUID institutionUuid, CreateAcademicClassDto request);
     DetailedResAcademicClassDto updateAcademicClass(UUID uuid, UpdateAcademicClassDto request);
     void deleteAcademicClass(UUID uuid);
 }
