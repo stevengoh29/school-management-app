@@ -6,7 +6,9 @@ import io.stevengoh.portfolio.school_management_app.core.auth.dtos.request.ReqRe
 import io.stevengoh.portfolio.school_management_app.core.auth.dtos.response.ResLoginDto;
 import io.stevengoh.portfolio.school_management_app.core.auth.entities.CustomUserDetails;
 import io.stevengoh.portfolio.school_management_app.modules.users.UserRepository;
+import io.stevengoh.portfolio.school_management_app.modules.users.dtos.response.DetailedResUserDto;
 import io.stevengoh.portfolio.school_management_app.modules.users.entities.User;
+import io.stevengoh.portfolio.school_management_app.modules.users.mappers.UserResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final JwtTokenService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final UserResponseMapper userResponseMapper;
 
     @Override
     public ResLoginDto login(ReqLoginDto request) {
@@ -34,10 +37,10 @@ public class AuthServiceImpl implements AuthService {
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        String accessToken = jwtService.generateToken(userDetails.getUsername());
-//        String refreshToken = jwtService.generateRefreshToken(user);
+        String accessToken = jwtService.generateAccessToken(userDetails);
+        String refreshToken = jwtService.generateRefreshToken(userDetails);
 
-        return new ResLoginDto(accessToken, "");
+        return new ResLoginDto(accessToken, refreshToken);
     }
 
     @Override
@@ -56,5 +59,13 @@ public class AuthServiceImpl implements AuthService {
 //        String newRefreshToken = jwtService.generateRefreshToken(user);
 
         return new ResLoginDto("newAccessToken", "newRefreshToken");
+    }
+
+    @Override
+    public DetailedResUserDto getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElse(null);
+
+        return userResponseMapper.toDetailedDto(user);
     }
 }
